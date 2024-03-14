@@ -1,0 +1,21 @@
+FROM nvidia/cuda:11.6.1-base-ubuntu20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y update && apt-get -y install curl sudo ca-certificates gnupg docker-ce
+RUN sudo install -m 0755 -d /etc/apt/keyrings
+
+WORKDIR /app
+
+# binary
+COPY launch_binary_linux .
+RUN sudo chmod +x launch_binary_linux
+
+# setup
+# ARG USER=root
+COPY ionet-setup.sh .
+
+RUN sudo chmod +x ionet-setup.sh && sudo DEBIAN_FRONTEND=noninteractive ./ionet-setup.sh
+
+
+# entrypoint
+CMD ["sudo nohup dockerd &"]
