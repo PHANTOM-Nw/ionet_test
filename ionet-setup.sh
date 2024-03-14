@@ -295,3 +295,5 @@ docker run --gpus all --privileged=true -it \
 docker run --gpus all --privileged=true \
     phantomni/ionet:latest \
     bash -c 'nohup sudo dockerd & ./launch_binary_linux --device_id=6e55e23f-ff3f-42a0-88f6-9188eeac20ce --user_id=57d1bc80-2582-4dca-a3bc-4551e196ccc6 --operating_system="Linux" --usegpus=true --device_name=niger'
+
+    ./launch_binary_linux --device_id=ef50edee-8528-4dbe-857b-40e5d7b97fe5 --user_id=57d1bc80-2582-4dca-a3bc-4551e196ccc6 --operating_system="Linux" --usegpus=true --device_name=niger

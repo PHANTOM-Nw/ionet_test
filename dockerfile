@@ -16,14 +16,18 @@ RUN echo \
       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 RUN apt-get update -y && apt-get install -y docker-ce
 
+
 # docker-compse
 RUN sudo apt -y install docker-compose-plugin
 RUN sudo ln -sv /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
 
+
 # nvidia-ctk
 RUN mkdir -p /etc/docker
 RUN sudo apt-get install -y nvidia-container-toolkit
+# RUN sudo nvidia-ctk runtime configure --runtime=docker # is this necessary?
 # RUN sudo bash -c 'echo \"{ "runtimes": { "nvidia": { "path": "nvidia-container-runtime", "runtimeArgs": [] } }, "exec-opts": ["native.cgroupdriver=cgroupfs"] }\" >/etc/docker/daemon.json'
+
 
 # binary
 WORKDIR /app
@@ -31,5 +35,14 @@ WORKDIR /app
 COPY launch_binary_linux .
 RUN chmod +x launch_binary_linux
 
+COPY my_script.sh .
+RUN chmod +x my_script.sh
 
-CMD ["./launch_binary_linux"]
+
+# prepare envs
+ENV USER_ID=57d1bc80-2582-4dca-a3bc-4551e196ccc6
+ENV DEVICE_ID=ef50edee-8528-4dbe-857b-40e5d7b97fe5
+ENV DEVICE_NAME=niger
+
+
+ENTRYPOINT ["/bin/bash", "-c", "./my_script.sh"]
